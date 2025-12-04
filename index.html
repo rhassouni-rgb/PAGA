@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TurboWash Elite - المنصة المتكاملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;500;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-deep: #050505;
+            --bg-card: #121212;
+            --primary: #3b82f6;       /* أزرق */
+            --accent: #f59e0b;        /* ذهبي */
+            --success: #10b981;       /* أخضر */
+            --danger: #ef4444;        /* أحمر */
+            --neon-blue: #00f3ff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --whatsapp: #25D366;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--bg-deep);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* --- شريط العروض المتحرك --- */
+        .marquee-container {
+            background: linear-gradient(90deg, #b91c1c, #dc2626);
+            color: white;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            z-index: 150;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .ticker-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 15px;
+            background: #b91c1c;
+            height: 100%;
+            z-index: 10;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+        }
+
+        .ticker-btn {
+            text-decoration: none;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 4px;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-admin { background: #1e293b; }
+        .btn-booking { background: var(--success); color: #000; }
+        .ticker-btn:hover { transform: scale(1.05); opacity: 0.9; }
+
+        .ticker-wrapper {
+            flex-grow: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+            font-weight: bold;
+            font-size: 1rem;
+            padding-left: 100%;
+        }
+
+        @keyframes marquee { 
+            0% { transform: translateX(0); } 
+            100% { transform: translateX(100%); } 
+        }
+
+        /* --- Navbar --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--primary); }
+        .nav-btn {
+            background: var(--glass); padding: 8px 20px; border-radius: 50px; text-decoration: none; color: white;
+            border: 1px solid var(--primary); transition: 0.3s; font-size: 0.9rem;
+        }
+        .nav-btn:hover { background: var(--primary); box-shadow: 0 0 15px var(--primary); }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1), transparent 70%);
+        }
+
+        .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; z-index: -1; animation: float 6s ease-in-out infinite; }
+        .blob-1 { top: 10%; left: 10%; width: 300px; height: 300px; background: var(--primary); }
+        .blob-2 { bottom: 10%; right: 10%; width: 200px; height: 200px; background: var(--accent); animation-delay: 2s; }
+
+        .hero h1 { font-size: 3.5rem; font-weight: 900; margin-bottom: 20px; line-height: 1.2; }
+        .hero h1 span { background: linear-gradient(to right, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.2rem; color: #94a3b8; max-width: 700px; margin-bottom: 50px; }
+
+        /* --- Portals --- */
+        .portals { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1000px; }
+        
+        .portal-card {
+            flex: 1; min-width: 300px;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            padding: 40px 30px; border-radius: 20px;
+            border: 1px solid var(--border);
+            text-decoration: none; color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative; overflow: hidden;
+        }
+        
+        .portal-card:hover { transform: translateY(-10px); }
+        .portal-admin:hover { box-shadow: 0 20px 50px rgba(59, 130, 246, 0.2); border-color: var(--primary); }
+        .portal-pos:hover { box-shadow: 0 20px 50px rgba(16, 185, 129, 0.2); border-color: var(--success); }
+
+        .icon-box { font-size: 3rem; margin-bottom: 20px; }
+        .portal-admin .icon-box { color: var(--primary); }
+        .portal-pos .icon-box { color: var(--success); }
+
+        /* --- Promo Banner --- */
+        .promo-banner {
+            margin: 80px 20px;
+            background: linear-gradient(45deg, #111, #222);
+            border-radius: 30px;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
+            max-width: 1200px;
+            margin-left: auto; margin-right: auto;
+            position: relative; overflow: hidden;
+        }
+        .promo-banner::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.1), transparent 60%);
+            animation: rotate 10s linear infinite;
+        }
+        .promo-content { z-index: 1; max-width: 60%; }
+        .promo-content h2 { font-size: 2.5rem; color: var(--accent); margin-bottom: 15px; }
+        .promo-badge { background: var(--accent); color: black; padding: 5px 15px; border-radius: 5px; font-weight: bold; font-size: 0.9rem; }
+        
+        .promo-btn {
+            z-index: 1; background: var(--accent); color: black; padding: 15px 40px;
+            font-size: 1.2rem; font-weight: bold; border-radius: 50px; text-decoration: none;
+            transition: 0.3s; box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+        .promo-btn:hover { transform: scale(1.05); background: #fff; }
+
+        /* --- NEW Pricing Section Styles --- */
+        .pricing-section { padding: 80px 20px; text-align: center; }
+        .pricing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .offer-card {
+            width: 100%;
+            max-width: 700px;
+            border-radius: 25px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            border: 2px solid transparent;
+        }
+
+        /* كارت العرض 2000 دج */
+        .offer-card.mega-deal {
+            background: linear-gradient(135deg, #450a0a 0%, #000 100%);
+            border-color: var(--danger);
+            box-shadow: 0 0 50px rgba(239, 68, 68, 0.2);
+        }
+        .offer-card.mega-deal:hover { transform: scale(1.02); box-shadow: 0 0 70px rgba(239, 68, 68, 0.4); }
+
+        /* كارت عرض 3 نسخ */
+        .offer-card.bulk-deal {
+            background: linear-gradient(135deg, #064e3b 0%, #000 100%);
+            border-color: var(--success);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+        }
+
+        .offer-tag {
+            position: absolute; top: 20px; right: -40px; transform: rotate(45deg);
+            background: var(--danger); color: white; padding: 5px 40px; font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+        }
+        
+        .offer-price { font-size: 4rem; font-weight: 900; color: #fff; margin: 20px 0; line-height: 1; }
+        .offer-price span { font-size: 1.5rem; color: #aaa; font-weight: normal; }
+        .old-price { font-size: 1.5rem; text-decoration: line-through; color: #666; }
+
+        .feature-check { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 10px 0; font-size: 1.1rem; color: #e2e8f0; }
+        .feature-check i { color: var(--accent); }
+
+        /* --- Reviews --- */
+        .reviews { padding: 60px 20px; background: #0a0a0a; }
+        .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 40px auto; }
+        .review-card { background: var(--glass); padding: 25px; border-radius: 15px; border: 1px solid var(--border); }
+        .stars { color: var(--accent); margin-bottom: 15px; }
+        .client-name { font-weight: bold; color: var(--primary); margin-top: 15px; display: block; }
+
+        /* --- Footer --- */
+        footer { padding: 50px 20px; background: #000; text-align: center; border-top: 1px solid var(--border); }
+        .social-links a { color: #fff; font-size: 1.5rem; margin: 0 15px; transition: 0.3s; }
+        .social-links a:hover { color: var(--primary); }
+
+        /* --- Floating Whatsapp --- */
+        .floating-wa {
+            position: fixed; bottom: 30px; right: 30px;
+            background-color: var(--whatsapp); color: white;
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            z-index: 200; transition: transform 0.3s;
+            text-decoration: none; animation: pulse-wa 2s infinite;
+        }
+        .floating-wa:hover { transform: scale(1.1); }
+        
+        @keyframes pulse-wa {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .promo-banner { flex-direction: column; text-align: center; gap: 30px; }
+            .offer-price { font-size: 3rem; }
+        }
+
+        @keyframes float { 0% { transform: translate(0, 0); } 50% { transform: translate(20px, 20px); } 100% { transform: translate(0, 0); } }
+        @keyframes rotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <a href="https://wa.me/213773656968" class="floating-wa" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <div class="marquee-container">
+        <div class="ticker-buttons">
+            <a href="https://raed.pythonanywhere.com/en/admin/login/?next=/en/admin/" class="ticker-btn btn-admin"><i class="fas fa-user-shield"></i> أدمن</a>
+            <a href="#" class="ticker-btn btn-booking"><i class="fas fa-calendar-check"></i> حجز</a>
+        </div>
+        
+        <div class="ticker-wrapper">
+            <div class="marquee-content">
+                تحطيم الأسعار! 2000 دج فقط اشتراك مدى الحياة 💥 | سارع بالطلب: 0773656968 | العرض محدود جداً 🚀
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo"><i class="fas fa-soap"></i> Turbo<span>Wash</span></div>
+        <a href="tel:0773656968" class="nav-btn"><i class="fas fa-phone"></i> اتصل بنا</a>
+    </nav>
+
+    <div class="hero">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+
+        <div style="margin-bottom: 20px; color: var(--accent); font-weight: bold; letter-spacing: 1px;">✨ الإصدار الاحترافي 2025</div>
+        <h1>النظام الذكي لتسيير<br><span>محطات الغسيل في الجزائر</span></h1>
+        <p>راقب مداخيلك، سير خدامتك، واطبع تيكيات احترافية.<br>كلش من تليفونك، وين ما كنت.</p>
+
+        <div class="portals">
+            <a href="https://raed.pythonanywhere.com/en/admin/login/?next=/en/admin/" class="portal-card portal-admin">
+                <div class="tag" style="background: var(--primary); padding: 5px 10px; border-radius: 5px; display: inline-block; margin-bottom: 10px; font-size: 0.8rem;">Espace Admin</div>
+                <div class="icon-box"><i class="fas fa-chart-pie"></i></div>
+                <h2>فضاء الإدارة</h2>
+                <p style="color: #94a3b8; margin-top: 10px;">الإحصائيات، الأرباح، التحكم الكامل.</p>
+                <div style="margin-top: 20px; color: var(--primary); font-weight: bold;">دخول <i class="fas fa-arrow-left"></i></div>
+            </a>
+
+            <a href="https://raed.pythonanywhere.com" class="portal-card portal-pos">
+                <div class="tag" style="background: var(--success); padding: 5px 10px; border-radius: 5px; display: inline-block; margin-bottom: 10px; font-size: 0.8rem;">Espace Caisse</div>
+                <div class="icon-box"><i class="fas fa-cash-register"></i></div>
+                <h2>فضاء العمل</h2>
+                <p style="color: #94a3b8; margin-top: 10px;">تسجيل السيارات وطباعة التذاكر.</p>
+                <div style="margin-top: 20px; color: var(--success); font-weight: bold;">دخول <i class="fas fa-arrow-left"></i></div>
+            </a>
+        </div>
+    </div>
+
+    <div class="promo-banner">
+        <div class="promo-content">
+            <span class="promo-badge">عرض محدود ⏳</span>
+            <h2>كرهت من السرقة و "القولاج"؟</h2>
+            <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.6;">
+                إحصائياً، محطات الغسيل تخسر <strong>30% من المداخيل</strong> بسبب غياب الرقابة.
+                مع نظام الإشعارات (Notification) تاعنا، تليفونك يصوني مع كل طوموبيل تدخل. 
+                <strong>رجع دراهم الاشتراك من النهار الأول!</strong>
+            </p>
+        </div>
+        <a href="https://wa.me/213773656968" class="promo-btn" target="_blank">اطلب التجربة المجانية <i class="fas fa-rocket"></i></a>
+    </div>
+
+    <section class="pricing-section">
+        <h2 style="font-size: 3rem; margin-bottom: 10px; color: var(--danger);">تحطيم الأسعار! 🧨</h2>
+        <p style="color: #94a3b8; font-size: 1.2rem;">تخلص من الاشتراكات الشهرية نهائياً. ادفع مرة واحدة واستفد للأبد.</p>
+
+        <div class="pricing-container">
+            
+            <div class="offer-card mega-deal">
+                <div class="offer-tag">تخفيض 90%</div>
+                <h3 style="color: var(--accent); font-size: 2rem;">اشتراك مدى الحياة</h3>
+                <div class="old-price">كان 25000 د.ج</div>
+                <div class="offer-price">2000 <span>د.ج فقط</span></div>
+                
+                <div style="margin: 30px 0;">
+                    <div class="feature-check"><i class="fas fa-check-circle"></i> نسخة كاملة بدون قيود</div>
+                    <div class="feature-check"><i class="fas fa-check-circle"></i> عدد غير محدود من العمال</div>
+                    <div class="feature-check"><i class="fas fa-check-circle"></i> تحديثات مجانية</div>
+                </div>
+
+                <a href="https://wa.me/213773656968?text=أريد_الاستفادة_من_عرض_2000دج" class="promo-btn" style="width: 100%; display: block; text-align: center; background: white; color: black;">احجز نسختك الآن <i class="fas fa-shopping-cart"></i></a>
+                <p style="margin-top: 15px; color: #7f1d1d; font-weight: bold;">⚠️ العرض سينتهي قريباً جداً</p>
+            </div>
+
+            <div class="offer-card bulk-deal">
+                <div class="tag" style="background: var(--success); right: auto; left: 0; border-radius: 0 0 20px 0;">عرض الأصدقاء</div>
+                <h3 style="font-size: 1.8rem;">عرض "اللمة" (3 نسخ)</h3>
+                <div class="offer-price" style="font-size: 3rem;">5000 <span>د.ج</span></div>
+                <p style="font-size: 1.1rem; color: #a7f3d0;">يعني النسخة تطيحلك بـ 1660 دج برك!</p>
+                
+                <div style="margin: 30px 0;">
+                    <div class="feature-check"><i class="fas fa-check"></i> جهز محطتك ومحطات صحابك</div>
+                    <div class="feature-check"><i class="fas fa-check"></i> نفس المميزات الاحترافية</div>
+                </div>
+
+                <a href="https://wa.me/213773656968?text=أريد_عرض_3_نسخ_بـ5000دج" class="nav-btn" style="width: 100%; display: block; text-align: center; background: var(--success); color: black; font-weight: bold;">اطلب عرض 3 نسخ</a>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="reviews">
+        <h2 style="text-align: center; margin-bottom: 40px;">واش قالوا علينا صحاب المحطات 💬</h2>
+        <div class="review-grid">
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p style="color: #cbd5e1;">"والله غير رحمة ربي. كنت شاك فالخددامين، نهار ركبت السيستم عرفت بلي كانو يدو 20% من المدخول. في سمانة رجعت حق الاشتراك."</p>
+                <span class="client-name">كريم - صاحب محطة (الجزائر العاصمة)</span>
+            </div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p style="color: #cbd5e1;">"حاجة فور، ساهل ماهل. الوالد تاعي كبير في العمر وعرف يخدم بيه. التيكي زاد النص في المحل."</p>
+                <span class="client-name">سفيان - لافاج السعادة (سطيف)</span>
+            </div>
+            <div class="review-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p style="color: #cbd5e1;">"الدعم التقني نتاعهم ما شاء الله، عيطتلهم على 10 تاع الليل رفدو عليا وريقلولي المشكل. ننصح بيه."</p>
+                <span class="client-name">مراد - محطة الطاسيلي (وهران)</span>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <h2 style="margin-bottom: 20px;">ما زالك متردد؟ 🤔</h2>
+        <p style="color: #94a3b8; margin-bottom: 30px;">عيط لنا درك نعطوك "ديمو" تجربو باطل وتشوف بعينك.</p>
+        
+        <div style="font-size: 2rem; font-weight: bold; color: var(--primary); margin-bottom: 30px;">
+            <a href="tel:0773656968" style="text-decoration: none; color: inherit;">📞 0773 65 69 68</a>
+        </div>
+
+        <div class="social-links">
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://wa.me/213773656968" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        
+        <p style="margin-top: 50px; font-size: 0.8rem; color: #333;">جميع الحقوق محفوظة TurboWash DZ 2025 ©</p>
+    </footer>
+
+</body>
+</html>
